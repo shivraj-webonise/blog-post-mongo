@@ -2,19 +2,19 @@ class PostsController < ApplicationController
   before_action :set_post, only: %i[show edit update destroy]
 
   def index
-    @posts = Post.all
+    @posts = current_user.posts
   end
 
   def show() end
 
   def new
-    @post = Post.new
+    @post = current_user.posts.build
   end
 
   def edit() end
 
   def create
-    @post = Post.new(post_params)
+    @post = current_user.posts.build(post_params)
     if @post.save
       redirect_to @post
     else
@@ -42,6 +42,6 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :author, :image_url, :published, :content)
+    params.require(:post).permit(:title, :author, :image_url, :published, :content, :user_id)
   end
 end
